@@ -1,0 +1,32 @@
+{% load static %}
+<!--New Post Card-->
+<div class="card mt-3 shadow-none border p-4">
+            
+    <form method="POST"  id='NewPostForm'>{% csrf_token %}
+      <div >
+        <div style="width:45px; float:left;">
+          {% if profile.profile_image %}
+          <p class="mb-0"><img src="media/{{profile.profile_image}}" style='width:45px;' alt="avatar mx-auto white" class="rounded-circle img-fluid"></p>
+          {% else %}
+          <p class="mb-0"><img src="{% static 'home/img/profile_defualt.png' %}" style='width:45px;' alt="avatar mx-auto white" class="rounded-circle img-fluid"></p>
+          {% endif %}
+        </div>
+        <div >
+          {{post_form.discription}}
+        </div>
+      </div>
+    <div id="new_post_btn">
+      <label for="image" class="btn btn-outline-secondary shadow-none " style="padding: 3px; width: 121px;">Choise image</label>
+      {{post_form.image}}
+      <input type="submit" class="new_post_btn btn btn-secondary shadow-none" value="post">
+    </div>
+    </form>
+  </div>
+     
+    
+    
+
+
+
+
+  <!--End New Post Card-->

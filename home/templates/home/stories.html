@@ -1,0 +1,16 @@
+   <!--Panel-->
+   <div class="card shadow-none border ">
+                
+    <div class=" card-header  dark-text">
+      Stories
+    </div>
+    <div class="card-body">
+      {% for story in stories  %}
+      <div class="mb-2">
+        <p class="mb-0"><img src="{{story.author.profile.profile_image.url}}" style='width:45px;' alt="avatar mx-auto white" class="rounded-circle img-fluid"> Username</p>       
+      </div>
+      {% endfor %}
+      
+    </div>
+  </div>
+  <!--/.Panel-->

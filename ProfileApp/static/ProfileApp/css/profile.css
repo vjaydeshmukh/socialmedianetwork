@@ -1,0 +1,338 @@
+body{
+    background-color: rgb(248, 248, 248);
+}
+:root {
+    font-size: 15px;
+} 
+
+.profile_counter{
+    margin-left: -40px;
+}
+.gallery-item-info ul li {
+    font-size: 15PX;
+}
+.profile-image {
+    width: calc(33.333% - 1rem);
+    justify-content: center;
+    align-items: center;
+    float: right;
+    MARGIN-RIGHT: 34%;
+}
+.profile-image img {
+    border-radius: 50%;
+    width: 160PX;
+    height: 160px;
+    float: right;
+    margin-right: 42PX;
+}
+ul {
+    list-style: none;
+    display: flex;
+    font-size: 19px;
+}
+
+/* Gallery Section */
+
+.gallery {
+    display: flex;
+    flex-wrap: wrap;
+    margin: -1rem -1rem;
+    padding-bottom: 3rem;
+}
+
+.gallery-item {
+    position: relative;
+    flex: 1 0 22rem;
+    margin: 1rem;
+    color: #fff;
+    cursor: pointer;
+}
+
+.gallery-item:hover .gallery-item-info,
+.gallery-item:focus .gallery-item-info {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.3);
+}
+
+.gallery-item-info {
+    display: none;
+}
+
+.gallery-item-info li {
+    display: inline-block;
+    font-size: 1.7rem;
+    font-weight: 600;
+}
+
+.gallery-item-likes {
+    margin-right: 2.2rem;
+}
+
+.gallery-item-type {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    font-size: 2.5rem;
+    text-shadow: 0.2rem 0.2rem 0.2rem rgba(0, 0, 0, 0.1);
+}
+
+.fa-clone,
+.fa-comment {
+    transform: rotateY(180deg);
+}
+
+.gallery-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+
+form.form-inline.center.d-flex {
+    margin: auto;
+    width:0;
+}
+@supports (display: grid) {
+    .profile {
+        display: grid;
+        grid-template-columns: 1fr 2fr;
+        grid-template-rows: repeat(3, auto);
+        grid-column-gap: 3rem;
+        align-items: center;
+    }
+
+    .profile-image {
+        grid-row: 1 / -1;
+    }
+
+    .gallery {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(22rem, 1fr));
+        grid-gap: 2rem;
+    }
+
+    .profile-image,
+    .profile-user-settings,
+    .profile-stats,
+    .profile-bio,
+    .gallery-item,
+    .gallery {
+        width: auto;
+        margin: 0;
+    }
+
+    .profile-image,
+    .profile-user-settings,
+    .profile-stats,
+    .profile-bio,
+    .gallery-item-one-img {
+        width: 300PX;
+        margin: 0;
+    }
+.modal5,
+.modal4,     
+.modal3,    
+.modal2,
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  padding-top: 100px; /* Location of the box */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+.right-icons{
+    float: right;
+    padding-right: 91PX;
+}
+.right-icons a{
+    color: rgb(0,0,0);
+}
+/* Modal Content */
+.modal-content5,
+.modal-content4,
+.modal-content3{
+    background-color: #fefefe;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 30%;
+    line-height: 24px;
+    flex-grow: 1;
+    font-size: 16px;
+    font-weight: 600;
+    border-radius: 10px;
+}
+.modal-content2,
+.modal-content {
+    background-color: #fefefe;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 20%;
+    line-height: 24px;
+    flex-grow: 1;
+    font-size: 16px;
+    font-weight: 600;
+    border-radius: 10px;
+    margin-top: 10%;
+}
+.modal-content5 p,
+.modal-content4 p,
+.modal-content3 p,
+.modal-content2 p,
+.modal-content p{
+    margin-top: 0;
+    margin-bottom: 1rem;
+    text-align: center;
+}
+
+/* The Close Button */
+.close5,
+.close4,
+.close3,
+.close2,
+.close {
+  color: #aaaaaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close5:hover,
+.close5:focus,
+.close4:hover,
+.close4:focus,
+.close3:hover,
+.close3:focus,
+.close2:hover,
+.close2:focus,
+.close:hover,
+.close:focus {
+  color: #000;
+  text-decoration: none;
+  cursor: pointer;
+}
+    @media (max-width: 40rem) {
+        .profile {
+            grid-template-columns: auto 1fr;
+            grid-row-gap: 1.5rem;
+        }
+
+        .profile-image {
+            grid-row: 1 / 2;
+        }
+
+        .profile-user-settings {
+            display: grid;
+            grid-template-columns: auto 1fr;
+            grid-gap: 1rem;
+        }
+
+        .profile-edit-btn,
+        .profile-stats,
+        .profile-bio {
+            grid-column: 1 / -1;
+        }
+
+        .profile-user-settings,
+        .profile-edit-btn,
+        .profile-settings-btn,
+        .profile-bio,
+        .profile-stats {
+            margin: 0;
+        }
+    }
+}
+.nav_pro {
+    position: absolute;
+    right: 55px;
+}
+
+@import url('https://fonts.googleapis.com/css?family=Montserrat&display=swap');
+    .wrapper {
+    width: 35PX;
+    float: right;
+    }
+
+    .notification_wrap .notification_icon{
+    	position: relative;
+    	width: 50px;
+    	height: 50px;
+    	font-size: 32px;
+    	margin: 0 auto;
+    	text-align: center;
+        margin-top: -9px;
+		margin-left: 5px;
+    }
+
+    .notification_wrap .notification_icon .fa-heart{
+    	cursor: pointer;
+    }
+
+    .notification_wrap .dropdown{
+    	width: 350px;
+    	height: auto;
+    	background: #fff;
+    	border-radius: 5px;
+    	box-shadow: 2px 4px 7px 4PX rgba(0,0,0,0.125);
+    	margin: 15px auto 0;
+    	padding: 15px;
+    	position: absolute;
+        display: none;
+        right: -68px;
+    }
+
+    .notification_wrap .dropdown .notify_item{
+    	display: flex;
+    	align-items: center;
+    	padding: 10px 0;
+    	border-bottom: 1px solid #dbdaff;
+    }
+
+    .notification_wrap .dropdown .notify_item:last-child{
+    	border-bottom: 0px;
+    }
+
+    .notification_wrap .dropdown .notify_item .notify_img{
+    	margin-right: 15px;
+    }
+
+    .notification_wrap .dropdown .notify_item .notify_info p{
+    	margin-bottom: 5px;
+    }
+
+    .notification_wrap .dropdown .notify_item .notify_info p span{
+    	color: #605dff;
+    	margin-left: 5px;
+    }
+
+    .notification_wrap .dropdown .notify_item .notify_info .notify_time{
+    	color: #c5c5e6;
+    	font-size: 12px;
+    }
+
+    .notification_wrap .dropdown:before{
+    	content: "";
+    	position: absolute;
+    	top: -30px;
+    	left: 50%;
+    	transform: translateX(-50%);
+    	border: 15px solid;
+    	border-color: transparent transparent #fff transparent;
+    }
+
+    .notification_wrap .dropdown.active{
+    	display: block;
+    }

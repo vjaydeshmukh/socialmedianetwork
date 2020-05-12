@@ -1,0 +1,140 @@
+{% extends 'home/index.html' %}
+{% block content %}
+{% load static %}
+
+
+<style>
+
+.right-icons{
+    float: right;
+    padding-right: 91PX;
+}
+.right-icons a{
+    color: rgb(0,0,0);
+}
+/* Modal Content */
+
+/* new post */
+
+.new_post_input{
+    BORDER: none;
+    outline: none;
+    border-bottom: solid 1px;
+    margin: 9px 0px 4px 19px;
+    width: 88%;
+    HEIGHT: 31px;
+}
+.new_post_img_btn{
+    width: 159px;
+    padding: 4px;
+    width: 115px;
+}
+.new_post_btn {
+    color: #fff;
+    background-color: #a6c!important;
+    width: 63PX;
+    padding: 4px;
+}
+
+#new_post_btn{
+  float: right;
+}
+input#image {
+    display: none;
+}
+.pro_img {
+    WIDTH: 30%;
+    float: left;
+}
+.icons {
+    float: right;
+    width: 30%;
+}
+
+i.trash.far.fa-trash-alt {
+    float: right;
+    margin-top: 10%;
+    color: red;
+}
+
+i.fas.fa-pen {
+    margin-top: 10%;
+    float: right;
+    padding-right: 11px;
+}
+.discription {
+  border:none;
+  background:transparent;
+  outline: none;
+  border-bottom: solid 1px;
+  width: 87%;
+
+}
+</style>
+<div class="container">
+    <div class="row">
+        <!-- Grid column -->
+        <div class="col-md-6 col-lg-7 mb-4">
+          <!--Card-->
+          <!--New Post Card-->
+          <div class="card mt-3 shadow-none border p-4">
+            
+       
+             
+          <!--End New Post Card-->
+        
+            
+            <div class="card mt-3 shadow-none border">
+
+                <div class="card-footer text-muted white-color dark-text">
+
+                  <div class='pro_img'>
+                      {% if post.author.profile.profile_image %}
+                        <p class="mb-0"><a href="{% url 'profile' post.author.id %}"><img src="{{post.author.profile.profile_image.url}}" style='width:45px;' alt="avatar mx-auto white" class="rounded-circle img-fluid"> {{post.author.username}}</a></p>
+                      {% else %}
+                      <p class="mb-0"><a href="{% url 'profile' post.author.id %}"><img src="{% static 'home/img/profile_defualt.png' %}" style='width:45px;' alt="avatar mx-auto white" class="rounded-circle img-fluid"> {{post.author.username}}</a></p>
+                  {% endif %}
+                  </div>
+                  
+                </div>
+                   <!--Card image-->
+                <div class="view">
+                    <img src="{{post.image.url}}" class="card-img-top" alt="photo">
+                    <a href="#">
+                      <div class="mask rgba-white-slight"></div>
+                    </a>
+                </div>
+                <div class="card-footer text-muted white-color dark-text">
+                 
+                  <a id='PostLikeBtn' href="{% url 'like' post.id %}"><i style="color: rgb(235, 75, 75); font-size:28px;" class="fa fa-heart"></i></a>
+                 
+                  <a href=""><i style="font-size:28px;" class="ml-2 fa fa-comments"></i></a>
+              </div>
+  
+        <!--Card content-->
+        <div class="card-body ">
+          <!--Title-->
+          <p>{{post.post_likes_number}} likes</p>
+          <!--Text-->
+          <form method="POST">{% csrf_token %}
+            {{form.discription}}
+            <input type="submit" name="post_edit" id="post_edit">
+          </form>
+          
+          
+
+         </div>
+        </div>
+  
+          </div>
+        
+
+
+          <!--/.Card-->
+        </div>
+      
+        
+    </div>
+ </div>
+
+{% endblock %}

@@ -1,0 +1,24 @@
+{% load static %}
+<link href="{% static 'home\css\reset.css' %}" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Indie+Flower|Overpass+Mono" rel="stylesheet">
+
+<div id="wrapper">
+  <div class="main-content-rest">
+    <div class="header">
+      <img src="{% static 'home/img/logo.png' %}" />
+    </div>
+    <div class="l-part">
+      <form method="POST">{% csrf_token %}
+        <div class="email">
+        <label for="id_email">Enter email:</label>
+         {{form.email}}
+        </div>
+         <input type="submit" value="Get Code" class="btn" />
+      </form>
+      <div class="s-part mt-3">
+        Don't have an account?<a href="{% url 'signup' %}"> create one</a>
+        
+      </div>
+    </div>
+  </div>
+</div>

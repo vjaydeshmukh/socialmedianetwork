@@ -1,0 +1,28 @@
+{% load static %}
+<link href="{% static 'home\css\reset.css' %}" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Indie+Flower|Overpass+Mono" rel="stylesheet">
+
+<div id="wrapper">
+  <div class="main-content-confirm">
+    <div class="header">
+      <img src="{% static 'home/img/logo.png' %}" />
+    </div>
+    <div class="l-part">
+      <form method="POST">{% csrf_token %}
+         <!-- <input type="text" placeholder="enter your email" name="email" class="input-1" /> -->
+         {% for item in form %}
+         <div class="password"> 
+         <label for="id_new_password{{forloop.counter}}">Password{{forloop.counter}}</label>
+         {{item}}
+        </div>
+         {% endfor %}
+         <input type="submit" value="Change" class="btn" />
+      </form>
+      <div class="s-part mt-3">
+        Don't have an account?<a href="{% url 'signup' %}"> create one</a>
+        
+      </div>
+    </div>
+  </div>
+
+</div>

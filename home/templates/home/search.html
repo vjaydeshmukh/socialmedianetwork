@@ -1,0 +1,29 @@
+{% extends 'home/index.html' %}
+{% block content %}
+{% load static %}
+{% if myUsers %}
+<div class="container">
+    <div class="row">
+
+        <div class="card shadow-none border ">
+                
+            <div class="card-header  dark-text">
+              Search result
+            </div>
+            <div class="card-body">
+                {% for user in myUsers %}
+              <div class="mb-2">
+                {% if user.profile.profile_image %}
+                <a href="{% url 'profile' user.profile.id %}"><p class="mb-0"><img src="{{ user.profile.profile_image.url }}" style='width:45px;' alt="avatar mx-auto white" class="rounded-circle img-fluid"> {{user}}</p></a>    
+                {% else %}
+                <a href="{% url 'profile' user.profile.id %}"><p class="mb-0"><img src="{% static 'home/img/profile_defualt.png' %}" style='width:45px;' alt="avatar mx-auto white" class="rounded-circle img-fluid"> {{user}}</p></a>    
+                {% endif %}
+            </div>     
+                {% endfor %}
+            </div>
+          </div>
+   </div>
+    
+</div>
+{% endif %}
+{% endblock %}

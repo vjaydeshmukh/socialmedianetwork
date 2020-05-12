@@ -1,0 +1,216 @@
+{% extends 'home/index.html' %}
+{% block content %}
+{% load static %}
+
+
+<style>
+
+.right-icons{
+    float: right;
+    padding-right: 91PX;
+}
+.right-icons a{
+    color: rgb(0,0,0);
+}
+/* Modal Content */
+
+/* new post */
+
+.new_post_input{
+    BORDER: none;
+    outline: none;
+    border-bottom: solid 1px;
+    margin: 9px 0px 4px 19px;
+    width: 88%;
+    HEIGHT: 31px;
+}
+.new_post_img_btn{
+    width: 159px;
+    padding: 4px;
+    width: 115px;
+}
+.new_post_btn {
+    color: #fff;
+    background-color: #a6c!important;
+    width: 63PX;
+    padding: 4px;
+}
+
+#new_post_btn{
+  float: right;
+}
+input#image {
+    display: none;
+}
+.pro_img {
+    WIDTH: 30%;
+    float: left;
+}
+.icons {
+    float: right;
+    width: 30%;
+}
+
+i.trash.far.fa-trash-alt {
+    float: right;
+    margin-top: 10%;
+    color: red;
+}
+
+i.fas.fa-pen {
+    margin-top: 10%;
+    float: right;
+    padding-right: 11px;
+}
+div#Post_type {
+    float: right;
+    margin: 9px 9px 0px 0px;
+}
+
+</style>
+<div class="container">
+    <div class="row">
+        <!-- Grid column -->
+        <div class="col-md-6 col-lg-7 mb-4">
+          <!--Card-->
+          <!--New Post Card-->
+          <div class="card mt-3 shadow-none border p-4">
+            
+            <form method="POST" action="{% url 'addpost' %}"  id='NewPostForm' enctype="multipart/form-data">{% csrf_token %}
+              <div >
+                <div style="width:45px; float:left;">
+                  {% if my_stories.profile_image %}
+                  <p class="mb-0"><img src="media/{{my_stories.profile_image}}" style='width:45px;' alt="avatar mx-auto white" class="rounded-circle img-fluid"></p>
+                  {% else %}
+                  <p class="mb-0"><img src="{% static 'home/img/profile_defualt.png' %}" style='width:45px;' alt="avatar mx-auto white" class="rounded-circle img-fluid"></p>
+                  {% endif %}
+                </div>
+                <div >
+                  {{post_form.discription}}
+                </div>
+              </div>
+            <div id="new_post_btn">
+              <label for="image" class="btn btn-outline-secondary shadow-none " style="padding: 3px; width: 121px;">Choise image</label>
+              {{post_form.image}}
+              <input type="submit" class="new_post_btn btn btn-secondary shadow-none" value="post">
+            </div>
+            <div id="Post_type">
+              {{post_form.post_type}}
+            </div>
+            </form>
+          </div>
+             
+          <!--End New Post Card-->
+          {% for post in posts %}
+            
+            <div class="card mt-3 shadow-none border">
+
+                <div class="card-footer text-muted white-color dark-text">
+
+                  <div class='pro_img'>
+                      {% if post.author.profile.profile_image %}
+                        <p class="mb-0"><a href="{% url 'profile' post.author.id %}"><img src="media/{{post.author.profile.profile_image}}" style='width:45px;' alt="avatar mx-auto white" class="rounded-circle img-fluid"> {{post.author.username}}</a></p>
+                      {% else %}
+                      <p class="mb-0"><a href="{% url 'profile' post.author.id %}"><img src="{% static 'home/img/profile_defualt.png' %}" style='width:45px;' alt="avatar mx-auto white" class="rounded-circle img-fluid"> {{post.author.username}}</a></p>
+                  {% endif %}
+                  </div>
+                  {% if post.author == request.user %}
+                  <div class="icons">
+                   <a href="{% url 'deletepost' post.id %}"><i class="trash far fa-trash-alt" aria-hidden="true"></i></a> 
+
+                   <a href="{% url 'editepost' post.id %}"><i class="fas fa-pen"></i></a>
+                  </div>
+                  {% endif %}
+                </div>
+                   <!--Card image-->
+                <div class="view">
+                    <img src="media/{{post.image}}" class="card-img-top" alt="photo">
+                    <a href="#">
+                      <div class="mask rgba-white-slight"></div>
+                    </a>
+                </div>
+                <div class="card-footer text-muted white-color dark-text">
+                 
+                  <a id='PostLikeBtn' href="{% url 'like' post.id %}"><i style="color: rgb(235, 75, 75); font-size:28px;" class="fa fa-heart"></i></a>
+                 
+                  <a href=""><i style="font-size:28px;" class="ml-2 fa fa-comments"></i></a>
+              </div>
+  
+        <!--Card content-->
+        <div class="card-body ">
+          <!--Title-->
+          <p>{{post.post_likes_number}} likes</p>
+          <!--Text-->
+          {% if post.discription %}
+          <p class="card-text"><b>{{post.author.username}} </b> {{post.discription}}</p>
+          {% endif %}
+          
+          {% for comment in post.comments.all %}
+          {% if comment.po.id == post.id %}
+          <p class="card-text"><b>{{comment.user.username}} </b> {{comment.comment}}</p>
+          {% endif %}
+          {% endfor %}
+          
+          <div class="border-top pt-2">
+          <!-- comment form -->
+          <form method="POST" action="{% url 'comment' post.id %}" id="CommentForm">{% csrf_token %}
+          {{form.post_comment}}
+          <input class='commentForm' type="submit" name="comment" value="comment">
+          </form>
+          <!-- comment form -->
+
+         </div>
+        </div>
+  
+          </div>
+          {% endfor %}
+
+
+          <!--/.Card-->
+        </div>
+      
+        <div class="col-lg-4 col-md-6 mt-3 ">
+            
+                <div class='mb-2'>
+                  
+
+                  {% if request.user.profile.profile_image %}
+                  {% if my_stories %}
+                    <a href="{% url 'story' my_stories.id %}"><p  class="mb-0 text-dark"><img src="media/{{request.user.profile.profile_image}}" style='width:45px; border:solid 3px {{my_stories.profile_stories.get_collor_display}};' alt="avatar mx-auto white" class="rounded-circle img-fluid"> {{request.user.username}}</p></a>
+                    {% else %}
+                    <a href="{% url 'story' my_stories.id %}"><p class="mb-0 text-dark"><img src="media/{{request.user.profile.profile_image}}" style='width:45px;' alt="avatar mx-auto white" class="rounded-circle img-fluid"> {{request.user.username}}</p></a>
+                    {% endif %}
+                  {% else %}
+                    {% if request.user.story %}
+                    <a href="{% url 'story' my_stories.id %}"><p class="mb-0 text-dark"><img src="{% static 'home/img/profile_defualt.png' %}" style='width:45px;border:solid 2px {{my_stories.profile_stories.get_collor_display}};' alt="avatar mx-auto white" class="rounded-circle img-fluid"> {{request.user.username}}</p></a>
+                    {% else %}
+                    <a href="{% url 'story' my_stories.id %}"><p class="mb-0 text-dark"><img src="{% static 'home/img/profile_defualt.png' %}" style='width:45px;' alt="avatar mx-auto white" class="rounded-circle img-fluid"> {{request.user.username}}</p></a>
+                    {% endif %}
+                  {% endif %}
+                  
+                </div>
+              
+           <!--Panel-->
+   <div class="card shadow-none border ">
+                
+    <div class=" card-header  dark-text">
+      Stories
+    </div>
+    <div class="card-body">
+      {% for profile_story in stories  %}
+      <div class="mb-2">
+        <a href="{% url 'story' profile_story.id %}"><p class="mb-0 text-dark"><img src="{{profile_story.profile_image.url}}" style='width:45px; border:solid 2px {{profile_story.profile_stories.get_collor_display}} ;' alt="avatar mx-auto white" class="rounded-circle img-fluid"> {{profile_story.user.username}}</p></a>
+      </div>
+    
+      {% endfor %}
+      
+    </div>
+  </div>
+  <!--/.Panel-->
+          
+        
+        </div>
+    </div>
+ </div>
+
+{% endblock %}

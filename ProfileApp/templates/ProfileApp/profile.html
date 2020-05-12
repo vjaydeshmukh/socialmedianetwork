@@ -1,0 +1,401 @@
+{% load static %}
+{% load crispy_forms_tags %}
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+  <link href="{% static 'ProfileApp/css/bootstrap.min.css' %}" rel="stylesheet">
+  <!-- Material Design Bootstrap -->
+  <link href="{% static 'ProfileApp/css/mdb.min.css' %}" rel="stylesheet %}" >
+  <!-- Your custom styles (optional) -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link href="{% static 'ProfileApp/css/style.min.css' %}" rel="stylesheet %}">
+  <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <script src='https://kit.fontawesome.com/a076d05399.js'></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <title>{{title}}</title>
+  <meta name="description" content="The HTML5 Herald">
+  <meta name="author" content="SitePoint">
+
+  <link rel="stylesheet" href="{% static 'ProfileApp\css\profile.css' %}">
+
+</head>
+<script>
+$(document).ready(function(){
+		$(".notification_icon .fa-heart").click(function(){
+			$(".dropdown").toggleClass("active");
+		})
+	});
+</script>
+<body>
+    <header>
+        <nav class="navbar navbar-light shadow-none border-bottom" style="background-color: #fff;">
+          <div class="container" style="position: relative; z-index: 1;">
+            <div class="row" style="width: 100%;">
+              <div class="col-sm">
+                <div class="logo">
+                  <a href="{% url 'index' %}"><img src="{% static 'ProfileApp/img/logo.png' %}" style='height: 33PX; margin-left: 15px; margin-bottom: 8PX;' alt="avatar mx-auto white" ></a>
+                </div>               
+              </div>
+              <div class="col-sm">
+                <div class="search">
+                  <form class="form-inline center d-flex " action="{% url 'search' %}">
+                    <input class="form-control mr-sm-2" type="search" placeholder="Search" name="myUsers" aria-label="Search">
+                  </form >
+                </div> 
+              </div>
+              {% if user.is_authenticated %}
+              <div class="col-sm">
+                <div class='right-icons'>
+                  <a href="{% url 'index' %}"><i class="fa fa-home ml-3 mt-1 " style="font-size:24px"></i></a>
+                  <a href="{% url 'explore' %}"><i class="fa fa-compass	ml-3 mt-1" style="font-size:24px"></i></a>
+                  <div class="wrapper">
+                    <div class="notification_wrap">
+                      <div class="notification_icon">
+                      <i class="fas fa-heart" style="font-size:24px"></i>
+                              
+                      </div>
+                      <div class="dropdown">
+                      {% for notification in notifications %}
+                        <div class="notify_item">
+                          <div class="notify_img">
+                            {% if notification.user.profile.profile_image %}
+                            <img src="{{notification.user.profile.profile_image.url}}" alt="profile_pic" style="width: 50px">
+                            {% else %}
+                            <img src="{% static 'ProfileApp/img/profile_defualt.png' %}" alt="profile_pic" style="width: 50px">
+                            {% endif %}
+                          </div>
+                          <div class="notify_info">
+                            {% if notification.comment %}
+                            <p>{{notification.user}}<span>comments on your image  </span><img src="{{notification.po.image.url}}" alt="profile_pic" style="width: 50px"></p>
+                            {% elif notification.influncer %}
+                            <p>{{notification.follower}}<span>follows you  </span></p>
+                            {% else %}
+                            <p>{{notification.user}}<span>likes your image  </span><img src="{{notification.po.image.url}}" alt="profile_pic" style="width: 50px"></p>
+                            {% endif %}
+                            <span class="notify_time">{{notification.date}}</span>
+                          </div>
+                        </div>
+                      {% endfor %}
+                    
+                      </div>
+                    </div>
+                  </div>
+
+                  {% if request.user.profile.profile_image %}
+                    {% if my_stories %}
+                    <a class="nav_pro" href="{% url 'profile' request.user.profile.id %}"><img src="{{request.user.profile.profile_image.url}}" style='width:30px; margin-left: 15px; margin-bottom: 8PX; border:solid 2px {{my_stories.get_collor_display}};' alt="avatar mx-auto white" class="rounded-circle img-fluid"></a>
+                    {% else %}
+                    <a class="nav_pro" href="{% url 'profile' request.user.profile.id %}"><img src="{{request.user.profile.profile_image.url}}" style='width:30px; margin-left: 15px; margin-bottom: 8PX;' alt="avatar mx-auto white" class="rounded-circle img-fluid"></a>
+                    {% endif %}
+                  {% else %}
+                    {% if request.user.story %}
+                    <a class="nav_pro" href="{% url 'profile' request.user.profile.id %}"><img src="{% static 'ProfileApp/img/profile_defualt.png' %}" style='width:30px; margin-left: 15px; margin-bottom: 8PX; border:solid 2px {{my_stories.collor};' alt="avatar mx-auto white" class="rounded-circle img-fluid"></a>
+                    {% else %}
+                    <a class="nav_pro" href="{% url 'profile' request.user.profile.id %}"><img src="{% static 'ProfileApp/img/profile_defualt.png' %}" style='width:30px; margin-left: 15px; margin-bottom: 8PX;' alt="avatar mx-auto white" class="rounded-circle img-fluid"></a>
+                    {% endif %}
+                  {% endif %}
+                </div>
+              </div>
+              {% else %}
+              <div class="col-sm">
+                <div class='right-icons' style="padding-right:0;">
+                  <a href="{% url 'login' %}" type="button" style="padding: 9px 10px 6px 10px;"  class="text-white shadow-none btn btn-primary">Login | Sign up</a>
+                </div>
+              </div>
+              {% endif %}
+            </div>
+          </div>
+        </nav>
+    </header>
+    
+    
+ <!-- Grid row -->
+ {% if user.is_authenticated and profile.user.username == request.user.username %}
+ <div class="container mt-5">
+    <div class="row pl-5">
+        <div class="col-sm-4">
+            <div id='myBtn4' class="profile-image">
+                {% if profile.profile_image %}
+                <img  src="{{profile.profile_image.url}}" alt="">
+                {% else %}
+                <img src="{% static 'ProfileApp/img/profile_defualt.png' %}" alt="">
+                {% endif %}
+                
+            </div>
+
+            <div id="myModal4" class="modal4">
+
+                <!-- Modal content -->
+                <div class="modal-content4">
+                  <span class="close4">&times;</span>
+                  <form action="{% url 'editimg' profile.id %}" method="POST" enctype="multipart/form-data">{% csrf_token %}
+                    {{form|crispy}}    
+                    <input class="btn btn-warning" type="submit" name="Edit" id="Edit" value="Edit">
+                  </form>
+                </div>
+                
+            </div>
+
+        </div>
+        <div class="col-sm-8">
+            <div class="">
+    
+                <span style="font-size: 25px;"><b>{{profile.user.username}}</b></span>
+
+                <button id="myBtn3" class="btn shadow-none border rounded "><b>Edit Profile</b></button>
+                
+
+                <button id="myBtn5" class="btn shadow-none border rounded" aria-label="profile settings"><i class="fas fa-cog"></i></button>
+
+            </div>
+            <div id="myModal5" class="modal5">
+
+              <!-- Modal content -->
+              <div class="modal-content5">
+                <span class="close5">&times;</span>
+                <a href="{% url 'logout' %}">Loug Out</a>
+              </div>
+            
+          </div>
+
+            <div id="myModal3" class="modal3">
+
+                <!-- Modal content -->
+                <div class="modal-content3">
+                  <span class="close3">&times;</span>
+                  <form action="{% url 'edit' profile.id %}" method="POST" enctype="multipart/form-data">{% csrf_token %}
+                        {{form1|crispy}}
+                        {{form2|crispy}}
+                    <input class="btn btn-warning" type="submit" name="Edit" id="Edit" value="Publish">
+                  </form>
+                </div>
+              
+            </div>
+             
+            <div class="profile_counter">
+    
+                <ul class="mt-4">
+                    <li  ><span class="profile-stat-count"><b>{{posts_count}}</b></span> posts</li>
+                    <li  class="ml-5" id="myBtn"><span  class="profile-stat-count"><b>{{profile.followers.count}}</b></span> followers</li>
+                    <div id="myModal" class="modal">
+
+                        <!-- Modal content -->
+                        <div class="modal-content">
+                          <span class="close">&times;</span>
+                          {% for follower in profile.followers.all %}
+                          {% if follower.profile_image %}
+                          <a href="{% url 'profile' follower.id %}"><p class="mb-0"><img src="{{follower.profile_image.url}}" style='width:45px;' alt="avatar mx-auto white" class="rounded-circle img-fluid"> {{follower.user.username}}</p></a>
+                          {% else %}
+                          <a href="{% url 'profile' follower.id %}"><p class="mb-0"><img src="{% static 'ProfileApp/img/profile_defualt.png' %}" style='width:45px;' alt="avatar mx-auto white" class="rounded-circle img-fluid"> {{follower.user.username}}</p></a>
+                          {% endif %}
+    
+                          {% endfor %}
+                        </div>
+                      
+                    </div>
+                    <li class="ml-5" id="myBtn2"><span class="profile-stat-count"><b>{{profile.following.count}}</b></span> following</li>
+                    <div id="myModal2" class="modal2">
+
+                        <!-- Modal content -->
+                        <div class="modal-content2">
+                          <span class="close2">&times;</span>
+                          {% for follower in profile.following.all %}
+                          {% if follower.profile_image %}
+                          <a href="{% url 'profile' follower.id %}"><p class="mb-0"><img src="{{follower.profile_image.url}}" style='width:45px;' alt="avatar mx-auto white" class="rounded-circle img-fluid"> {{follower.user.username}}</p></a>
+                          {% else %}
+                          <a href="{% url 'profile' follower.id %}"><p class="mb-0"><img src="{% static 'ProfileApp/img/profile_defualt.png' %}" style='width:45px;' alt="avatar mx-auto white" class="rounded-circle img-fluid"> {{follower.user.username}}</p></a>
+                          {% endif %}
+    
+                          {% endfor %}
+                        </div>
+                      
+                    </div>
+                </ul>
+            </div>
+            <div class="mt-4">
+    
+                <p><span class="mt-3"></span> {{profile.bio}} </p>
+
+            </div>
+        </div>
+      </div>
+ </div>
+ <div class="container mt-5">
+    
+    <div class="gallery">
+        
+        {% if posts_count == 1 %}    
+        {% for post in posts %}
+                <div class="gallery-item-one-img" tabindex="0">
+    
+                    <img src="{{post.image.url}}" class="gallery-image" alt="">
+    
+                    <div class="gallery-item-info">
+    
+                        <ul>
+                            <li class="gallery-item-likes"><span class="visually-hidden">Likes:</span><i class="fas fa-heart" aria-hidden="true"></i> {{post.post_likes_number}}</li>
+                        </ul>
+    
+                    </div>
+    
+                </div>
+        {% endfor %}
+        {% else %}
+        {% for post in posts %}
+        <div class="gallery-item" tabindex="0">
+
+            <img src="{{post.image.url}}" class="gallery-image" alt="">
+
+            <div class="gallery-item-info">
+
+                <ul>
+                    <li class="gallery-item-likes"><span class="visually-hidden">Likes:</span><i class="fas fa-heart" aria-hidden="true"></i> {{post.post_likes_number}}</li>
+                </ul>
+
+            </div>
+
+        </div>
+        {% endfor %}
+        {% endif %}
+        {% else %}
+        <div class="container mt-4">
+            <div class="row pl-5">
+                <div class="col-sm-4">
+                    <div class="profile-image">
+            
+                        {% if profile.profile_image %}
+                        <img src="{{profile.profile_image.url}}" alt="">
+                        {% else %}
+                        <img src="{% static 'ProfileApp/img/profile_defualt.png' %}" alt="">
+                        {% endif %}
+        
+                    </div>
+        
+                </div>
+                <div class="col-sm-8">
+                    <div class="">
+            
+                        <span style="font-size: 25px;"><b>{{profile.user.username}}</b></span>
+                        {% if follower %}
+                        <a href="{% url 'cancel' profile.pk %}" class="btn  shadow-none border rounded" > <b>Cancel</b></a>
+                        {% else %}
+                        <a href="{% url 'follow' profile.pk %}" class="btn btn-primary shadow-none border rounded" > <b>Follow</b></a>
+                        {% endif %}
+                        <button type="button" class="btn shadow-none border rounded"><b>contact</b></button>
+        
+                        <button class="btn shadow-none border rounded" aria-label="profile settings"><i class="fas fa-cog"></i></button>
+        
+                    </div>
+                    <div class="profile_counter">
+            
+                        <ul class="mt-4">
+                            <li ><span class="profile-stat-count"><b>{{posts_count}}</b></span> posts</li>
+                            <li class="ml-5"  id="myBtn"><span  class="profile-stat-count"><b>{{profile.followers.count}}</b></span> followers</li>
+                            <div id="myModal" class="modal">
+        
+                                <!-- Modal content -->
+                                <div class="modal-content">
+                                  <span class="close">&times;</span>
+                                  {% for follower in profile.followers.all %}
+                                  {% if follower.profile_image %}
+                                  <a href="{% url 'profile' follower.id %}"><p class="mb-0"><img src="{{follower.profile_image.url}}" style='width:45px;' alt="avatar mx-auto white" class="rounded-circle img-fluid"> {{follower.user.username}}</p></a>
+                                  {% else %}
+                                  <a href="{% url 'profile' follower.id %}"><p class="mb-0"><img src="{% static 'ProfileApp/img/profile_defualt.png' %}" style='width:45px;' alt="avatar mx-auto white" class="rounded-circle img-fluid"> {{follower.user.username}}</p></a>
+                                  {% endif %}
+                                          
+                                  {% endfor %}
+                                </div>
+                              
+                            </div>
+                            <li class="ml-5" id="myBtn2"><span class="profile-stat-count"><b>{{profile.following.count}}</b></span> following</li>
+                            <div id="myModal2" class="modal2">
+        
+                                <!-- Modal content -->
+                                <div class="modal-content2">
+                                  <span class="close2">&times;</span>
+                                  {% for follower in profile.following.all %}
+                                  {% if follower.profile_image %}
+                                  <a href="{% url 'profile' follower.id %}"><p class="mb-0"><img src="{{follower.profile_image.url}}" style='width:45px;' alt="avatar mx-auto white" class="rounded-circle img-fluid"> {{follower.user.username}}</p></a>
+                                  {% else %}
+                                  <a href="{% url 'profile' follower.id %}"><p class="mb-0"><img src="{% static 'ProfileApp/img/profile_defualt.png' %}" style='width:45px;' alt="avatar mx-auto white" class="rounded-circle img-fluid"> {{follower.user.username}}</p></a>
+                                  {% endif %}
+            
+                                  {% endfor %}
+                                </div>
+                              
+                            </div>
+                        </ul>
+                        
+        
+                    </div>
+                    <div class="mt-5">
+            
+                        <p><span class=""></span> {{profile.bio}} </p>
+        
+                    </div>
+                </div>
+              </div>
+         </div>
+         <div class="container mt-5">
+    
+            <div class="gallery">
+                
+                {% if posts_count == 1 %}    
+                {% for post in posts %}
+                <div class="gallery-item-one-img" tabindex="0">
+    
+                    <img src="{{post.image.url}}" class="gallery-image" alt="">
+    
+                    <div class="gallery-item-info">
+    
+                        <ul>
+                            <li class="gallery-item-likes"><span class="visually-hidden">Likes:</span><i class="fas fa-heart" aria-hidden="true"></i> {{post.post_likes_number}}</li>
+                        </ul>
+    
+                    </div>
+    
+                </div>
+                {% endfor %}
+                {% else %}
+                {% for post in posts %}
+                <div class="gallery-item" tabindex="0">
+    
+                    <img src="{{post.image.url}}" class="gallery-image" alt="">
+    
+                    <div class="gallery-item-info">
+    
+                        <ul>
+                            <li class="gallery-item-likes"><span class="visually-hidden">Likes:</span><i class="fas fa-heart" aria-hidden="true"></i> {{post.post_likes_number}}</li>
+                        </ul>
+    
+                    </div>
+    
+                </div>
+                {% endfor %}
+                {% endif %}
+
+            </div>
+ 
+            <!-- <div class="loader"></div> -->
+    
+        </div>
+        {% endif %}
+
+      
+  <script src="js/scripts.js"></script>
+  <script type="text/javascript" src="{% static 'ProfileApp/js/jquery-3.4.1.min.js' %}"></script>
+  <!-- Bootstrap tooltips -->
+  <script type="text/javascript" src="{% static 'ProfileApp/js/popper.min.js' %}"></script>
+  <!-- Bootstrap core JavaScript -->
+  <script type="text/javascript" src="{% static 'ProfileApp/js/bootstrap.min.js' %}"></script>
+  <!-- MDB core JavaScript -->
+  <script type="text/javascript" src="{% static 'ProfileApp/js/mdb.min.js' %}"></script>
+
+  <script type="text/javascript" src="{% static 'ProfileApp\js\profile.js' %}"></script>
+
+</body>
+</html>

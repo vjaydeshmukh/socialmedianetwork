@@ -1,0 +1,35 @@
+{% extends 'home/index.html' %}
+{% block content %}
+{% load static %}
+
+<link href="{% static 'home\css\explore.css' %}" rel="stylesheet">
+
+<!-- Grid row -->
+
+<div class="container">
+    <div class="row mt-5">
+ <!-- Grid row -->
+ <div class="gallery" id="gallery">
+   {% for post in posts %}
+    <div class="mb-3 pics animation all 2">
+      <img style="height: 247px;" class="img-fluid" src="{{post.image.url}}" alt="Card image cap">
+    </div>
+   {% endfor %}
+  
+</div>
+  
+<script>
+    $(function() {
+        var selectedClass = "";
+        $(".filter").click(function(){
+        selectedClass = $(this).attr("data-rel");
+        $("#gallery").fadeTo(100, 0.1);
+        $("#gallery div").not("."+selectedClass).fadeOut().removeClass('animation');
+        setTimeout(function() {
+        $("."+selectedClass).fadeIn().addClass('animation');
+        $("#gallery").fadeTo(300, 1);
+        }, 300);
+        });
+        });
+</script>
+{% endblock %}

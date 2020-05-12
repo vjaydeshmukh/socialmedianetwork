@@ -1,0 +1,119 @@
+{% load static %}
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name='viewport' content='width=device-width, initial-scale=1'>
+  <meta name="description" content="This is noureddine imqilqane social media website">
+  <link href="{% static 'home/css/bootstrap.min.css' %}" rel="stylesheet">
+  <link href="{% static 'home/css/mdb.min.css' %}" rel="stylesheet %}" >
+  <link href="{% static 'home/css/style.min.css' %}" rel="stylesheet %}">
+  <link href="{% static 'home/css/index.css' %}" rel="stylesheet %}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <script src='https://kit.fontawesome.com/a076d05399.js'></script>
+  <script src="https://kit.fontawesome.com/b99e675b6e.js"></script>
+  <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+  <title>{{title}}</title>
+
+  <script>
+    $(document).ready(function(){
+			$(".notification_icon .fa-heart").click(function(){
+				$(".dropdown").toggleClass("active");
+			})
+		});
+  </script>
+</head>
+
+<body>
+    <header>
+        <nav class="navbar navbar-light shadow-none border-bottom" style="background-color: #fff;">
+          <div class="container" style="position: relative; z-index: 1;">
+            <div class="row" style="width: 100%;">
+              <div class="col-sm">
+                <div class="logo">
+                  <a href="{% url 'index' %}"><img src="{% static 'home/img/logo.png' %}" style='height: 33PX; margin-left: 15px; margin-bottom: 8PX;' alt="avatar mx-auto white" ></a>
+                </div>               
+              </div>
+              <div class="col-sm">
+                <div class="search">
+                  <form class="form-inline center d-flex " action="{% url 'search' %}">
+                    <input class="form-control mr-sm-2" type="search" placeholder="Search" name="myUsers" aria-label="Search">
+                  </form >
+                </div> 
+              </div>
+              <div class="col-sm">
+                <div class='right-icons'>
+                  <a href="{% url 'index' %}"><i class="fa fa-home ml-3 mt-1 " style="font-size:24px"></i></a>
+                  
+                  <a href="{% url 'explore' %}"><i class="fa fa-compass	ml-3 mt-1" style="font-size:24px"></i></a>
+                  <div class="wrapper">
+                    <div class="notification_wrap">
+                      <div class="notification_icon">
+                      <i class="fas fa-heart" style="font-size:24px"></i>
+                              
+                      </div>
+                      <div class="dropdown">
+                      {% for notification in notifications %}
+                        <div class="notify_item">
+                          <div class="notify_img">
+                            {% if notification.user.profile.profile_image %}
+                            <img src="{{notification.user.profile.profile_image.url}}" alt="profile_pic" style="width: 50px">
+                            {% else %}
+                            <img src="{% static 'home/img/profile_defualt.png' %}" alt="profile_pic" style="width: 50px">
+                            {% endif %}
+                          </div>
+                          <div class="notify_info">
+                            {% if notification.comment %}
+                            <p>{{notification.user}}<span>comments on your image  </span><img src="{{notification.po.image.url}}" alt="profile_pic" style="width: 50px"></p>
+                            {% elif notification.influncer %}
+                            <p>{{notification.follower}}<span>follows you  </span></p>
+                            {% else %}
+                            <p>{{notification.user}}<span>likes your image  </span><img src="{{notification.po.image.url}}" alt="profile_pic" style="width: 50px"></p>
+                            {% endif %}
+                            <span class="notify_time">{{notification.date}}</span>
+                          </div>
+                        </div>
+                      {% endfor %}
+                    
+                      </div>
+                    </div>
+                  </div>
+
+                  {% if request.user.profile.profile_image %}
+                    {% if my_stories %}
+                    <a class="nav_pro" href="{% url 'profile' request.user.profile.id %}"><img src="{{request.user.profile.profile_image.url}}" style='width:30px; margin-left: 15px; margin-bottom: 8PX; border:solid 2px {{my_stories.get_collor_display}};' alt="avatar mx-auto white" class="rounded-circle img-fluid"></a>
+                    {% else %}
+                    <a class="nav_pro" href="{% url 'profile' request.user.profile.id %}"><img src="{{request.user.profile.profile_image.url}}" style='width:30px; margin-left: 15px; margin-bottom: 8PX;' alt="avatar mx-auto white" class="rounded-circle img-fluid"></a>
+                    {% endif %}
+                  {% else %}
+                    {% if request.user.story %}
+                    <a class="nav_pro" href="{% url 'profile' request.user.profile.id %}"><img src="{% static 'home/img/profile_defualt.png' %}" style='width:30px; margin-left: 15px; margin-bottom: 8PX; border:solid 2px {{my_stories.collor};' alt="avatar mx-auto white" class="rounded-circle img-fluid"></a>
+                    {% else %}
+                    <a class="nav_pro" href="{% url 'profile' request.user.profile.id %}"><img src="{% static 'home/img/profile_defualt.png' %}" style='width:30px; margin-left: 15px; margin-bottom: 8PX;' alt="avatar mx-auto white" class="rounded-circle img-fluid"></a>
+                    {% endif %}
+                  {% endif %}
+                </div>
+              </div>
+            </div>
+          </div>
+        </nav>
+    </header>
+    
+ <!-- Grid row -->
+ 
+ {% block content %}
+
+ {% endblock %}
+
+  <script src="js/scripts.js"></script>
+  <script type="text/javascript" src="{% static 'home/js/jquery-3.4.1.min.js' %}"></script>
+  <!-- Bootstrap tooltips -->
+  <script type="text/javascript" src="{% static 'home/js/popper.min.js' %}"></script>
+  <!-- Bootstrap core JavaScript -->
+  <script type="text/javascript" src="{% static 'home/js/bootstrap.min.js' %}"></script>
+  <!-- MDB core JavaScript -->
+  <script type="text/javascript" src="{% static 'home/js/mdb.min.js' %}"></script>
+</body>
+</html>
